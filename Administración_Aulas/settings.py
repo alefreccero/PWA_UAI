@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_cassandra_engine',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,9 +76,21 @@ WSGI_APPLICATION = 'Administración_Aulas.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'ENGINE': 'django_cassandra_engine',
+    'NAME': 'administracionaulas',
+    'TEST_NAME': 'test_db',
+    'HOST': '192.168.220.128:9160',
+    'OPTIONS': {
+        'replication': {
+            'strategy_class': 'SimpleStrategy',
+            'replication_factor': 1
+        }
     }
+    }
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
 }
 
 
