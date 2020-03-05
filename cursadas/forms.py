@@ -9,7 +9,6 @@ TURNOS= [
 COMISIONES= [
     ('A', 'A'),
     ('B', 'B'),
-    ('C', 'C'),
         ]
 
 class cursadasForm(forms.Form):

@@ -1,0 +1,15 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Planificador</title>
+</head>
+<body>
+    <form method='post' action=''>
+        <select class="form-control" id="make" name='selected_car'>
+            {% for aulas in allaulas %}
+                <option value='{{aulas.aula_id}}'>{{ aulas.nombre }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+</body>

@@ -1,0 +1,35 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>REPORTE1</title>
+</head>
+<body>
+
+
+
+<h1>Cursadas sin aula</h1>
+<table border="1" width="600">
+<tr>
+<td><b>Materia</b></td>
+<td><b>Carrera</b></td>
+<td><b>Turno</b></td>
+<td><b>Comision</b></td>
+<td><b>Inscri5ptos</b></td>
+
+</tr>
+
+{% for cursadasinaula in allcursadassinaula %}
+<tr>
+<td>{{ cursadasinaula.nombremat }}</td>
+<td>{{ cursadasinaula.carrera }}</td>
+<td>{{ cursadasinaula.turno }}</td>
+<td>{{ cursadasinaula.comision }}</td>
+<td>{{ cursadasinaula.cantalumnos }}</td>
+
+
+</tr>
+{% endfor %}
+</table>
+
+
+</body>

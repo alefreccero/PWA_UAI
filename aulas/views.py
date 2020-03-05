@@ -75,14 +75,7 @@ def get_aula(request):
                     crearaulas(aulanombre,aulacapa,aulapiso,'Jueves')
                     crearaulas(aulanombre,aulacapa,aulapiso,'Viernes')
                     cluster.shutdown() # Cierro La conexion
-                    # aulita = aulas() # Instancio un objeto aula
-                    # aulita.aula_id = uuid.uuid1()
-                    # aulita.nombre = aulanombre # asigno los valores del form en la prop del objeto instanciado en el paso anterior
-                    # aulita.capacidad= aulacapa # asigno los valores del form en la prop del objeto instanciado en el paso anterior
-                    # aulita.piso= aulapiso
-                    # aulita.enuso = False
-                    # aulita.save() # salvo el objeto en la DB
-                    # cluster.shutdown() # Cierro La conexion
+
                     return HttpResponse("CREASTE UN AULA")
 
         # if a GET (or any other method) we'll create a blank form
@@ -92,91 +85,3 @@ def get_aula(request):
 
 
     return render(request, 'aula.html', {'form': form})
-
-# def get_name(request):
-#     # if this is a POST request we need to process the form data
-#     if request.method == 'POST':
-#         # create a form instance and populate it with data from the request:
-#         form = AulasForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             # process the data in form.cleaned_data as required
-#             # ...
-#             # redirect to a new URL:
-#              data = request.POST.copy() # Copia la data del post a la variable data, luego voy a extaer los campos del form con esta variable
-#              aulanombre = data.get('aula') #aca extraigo los campos del form delñ data que definimos en la linea anterior, el parentisis refiere al nombre que definimos el campo en el form.py
-#              aulacapa = data.get('capacidad') #esto refiere al nombre que definimos en el form.py
-#              capa = int(aulacapa) #lo fuerzo a int porque nose porque piensa que es un int, sin esta conversion falla el insert
-#              cursor = connection.cursor()
-#              result = cursor.execute("INSERT INTO aulas(id_aula, capacidad, nombre) VALUES (now(),%s,%s)",(capa, aulanombre)) # refiero los values con el comodin %s luego le clavo las variables
-#              return HttpResponse("CREASTE UN AULA!!")
-#             #return HttpResponseRedirect('/AULACREADA/')
-
-#     # if a GET (or any other method) we'll create a blank form
-#     else:
-
-#         form = AulasForm()
-
-
-#     return render(request, 'aula.html', {'form': form})
-
-
-# def get_materias(request):
-#     # if this is a POST request we need to process the form data
-#     if request.method == 'POST':
-#         # create a form instance and populate it with data from the request:
-#         form = materiasForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             # process the data in form.cleaned_data as required
-#             # ...
-#             # redirect to a new URL:
-#              data = request.POST.copy() # Copia la data del post a la variable data, luego voy a extaer los campos del form con esta variable
-#              aulanombre = data.get('aula') #aca extraigo los campos del form delñ data que definimos en la linea anterior, el parentisis refiere al nombre que definimos el campo en el form.py
-#              aulacapa = data.get('capacidad') #esto refiere al nombre que definimos en el form.py
-#              capa = int(aulacapa) #lo fuerzo a int porque nose porque piensa que es un int, sin esta conversion falla el insert
-#              cursor = connection.cursor()
-#              result = cursor.execute("INSERT INTO aulas(id_aula, capacidad, nombre) VALUES (now(),%s,%s)",(capa, aulanombre)) # refiero los values con el comodin %s luego le clavo las variables
-#              return HttpResponse("CREASTE UN AULA!!")
-#             #return HttpResponseRedirect('/AULACREADA/')
-
-#     # if a GET (or any other method) we'll create a blank form
-#     else:
-
-#         form = materiasForm()
-
-
-#     return render(request, 'name.html', {'form': form})
-
-
-
-
-    # def get_name(request):
-    # # if this is a POST request we need to process the form data
-    # if request.method == 'POST':
-    #     # create a form instance and populate it with data from the request:
-    #     form = AulasForm(request.POST)
-    #     # check whether it's valid:
-    #     if form.is_valid():
-    #         # process the data in form.cleaned_data as required
-    #         # ...
-    #         # redirect to a new URL:
-    #          data = request.POST.copy() # Copia la data del post a la variable data, luego voy a extaer los campos del form con esta variable
-    #          aulanombre = data.get('aula') #aca extraigo los campos del form delñ data que definimos en la linea anterior, el parentisis refiere al nombre que definimos el campo en el form.py
-    #          aulacapa = data.get('capacidad') #esto refiere al nombre que dEfinimos en el form.py
-    #          cluster = Cluster(['127.0.0.1'])
-    #          session = cluster.connect()
-    #          session.set_keyspace('dbpwa')
-    #          insert  = aulas(nombre=aulanombre), aulas(capacidad=aulacapa) 
-    #          insert.save()
-    #          cluster.shutdown()
-    #          return HttpResponse("ENTRO AL IS VALID")
-    #         #return HttpResponseRedirect('/thanks/')
-
-    # # if a GET (or any other method) we'll create a blank form
-    # else:
-
-    #     form = AulasForm()
-
-
-    # return render(request, 'name.html', {'form': form})

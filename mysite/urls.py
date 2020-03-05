@@ -21,7 +21,10 @@ urlpatterns = [
     url(r'^cursadas/', include('cursadas.urls')),
     url(r'^reporte1/', include('reporte1.urls')),
     url(r'^planificador/', include('asignador.urls')),
-    url(r'^reporte2/', include('reporte2.urls')),
+    url(r'^reportes/', include('reporte2.urls')),
+    url(r'^reporte3/', include('reporte3.urls')),
+    url(r'^reporte4/', include('reporte4.urls')),
+    url(r'^reporte-comisiones/', include('reporte5.urls')),
     url(r'^admin/', admin.site.urls)
 
 ]
