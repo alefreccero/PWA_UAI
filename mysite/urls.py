@@ -18,13 +18,19 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^aulas/', include('aulas.urls')),
+    url(r'^aula/', include('aulas.urls')),
     url(r'^cursadas/', include('cursadas.urls')),
-    url(r'^reporte1/', include('reporte1.urls')),
+    url(r'^cursada/', include('cursadas.urls')),
+    url(r'^ReporteCursada_libre/', include('reporte1.urls')),
+    url(r'^reportecursada_libre/', include('reporte1.urls')),
     url(r'^planificador/', include('asignador.urls')),
     url(r'^reportes/', include('reporte2.urls')),
-    url(r'^reporte3/', include('reporte3.urls')),
-    url(r'^reporte4/', include('reporte4.urls')),
-    url(r'^reporte-comisiones/', include('reporte5.urls')),
+    url(r'^ReporteAula/', include('reporte4.urls')),
+    url(r'^reporteaula/', include('reporte4.urls')),
+    url(r'^ReporteAula_libre/', include('reporte3.urls')),
+    url(r'^reporteaula_libre/', include('reporte3.urls')),
+    url(r'^ReporteComision/', include('reporte5.urls')),
+    url(r'^reportecomision/', include('reporte5.urls')),
     url(r'^admin/', admin.site.urls)
 
 ]

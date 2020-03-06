@@ -14,5 +14,5 @@ def showreport1(request):
 	contexto = {'allaulasinuso': allaulasinuso}
 	#contexto = template.Context('allaulas': 'allaulas')
 		    #return a response to your template and add query_results to the context
-	return render(request, 'reporte3.html', contexto)
+	return render(request, 'reporte6.html', contexto)
 

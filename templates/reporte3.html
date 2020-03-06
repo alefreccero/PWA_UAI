@@ -1,15 +1,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Planificador</title>
+<title>Reporte de aulas sin uso</title>
 </head>
 <body>
-    <form method='post' action=''>
-        <select class="form-control" id="make" name='selected_car'>
-            {% for aulas in allaulas %}
-                <option value='{{aulas.aula_id}}'>{{ aulas.nombre }}</option>
-            {% endfor %}
-        </select>
-    </form>
+
+
+
+<h1>Aulas sin Uso</h1>
+<table border="1" width="600">
+<tr>
+<td><b>Aula</b></td>
+<td><b>Dia</b></td>
+<td><b>Turno</b></td>
+<td><b>Piso</b></td>
+<td><b>Capacidad</b></td>
+
+</tr>
+
+{% for aulasinuso in allaulasinuso %}
+<tr>
+<td>{{ aulasinuso.nombre }}</td>
+<td>{{ aulasinuso.dia }}</td>
+<td>{{ aulasinuso.turno }}</td>
+<td>{{ aulasinuso.piso }}</td>
+<td>{{ aulasinuso.capacidad }}</td>
+
+</tr>
+{% endfor %}
+</table>
+
 
 </body>

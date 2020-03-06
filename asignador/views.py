@@ -27,70 +27,142 @@ def lista(vv):
         print(v)
 
 def get_asignador(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = cursadasForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
+    
+        # if this is a POST request we need to process the form data
+
+    cluster = Cluster(['127.0.0.1'])
+    session = cluster.connect()
+    session.set_keyspace('dbpwa')
+    session.execute("truncate dbpwa.planificacion")
+    session.execute("truncate dbpwa.aulasinuso")
+    session.execute("truncate dbpwa.cursadasinaula")
+                    
+    aularows = aulas.objects.all()
+    allaulas = []
+    for row in aularows:
+        allaulas.append(row)
+
+    cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Manana' AND comision='A' ALLOW FILTERING;")
+    cursadas_manana_a = []
+    for row in cursadarows:
+        cursadas_manana_a.append(row)
+    
+    cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Manana' AND comision='B' ALLOW FILTERING;")
+    cursadas_manana_b = []
+    for row in cursadarows:
+        cursadas_manana_b.append(row)
+
+    cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Tarde' AND comision='A' ALLOW FILTERING;")
+    cursadas_tarde_a= []
+    for row in cursadarows:
+        cursadas_tarde_a.append(row)
+    
+    cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Tarde' AND comision='B' ALLOW FILTERING;")
+    cursadas_tarde_b = []
+    for row in cursadarows:
+        cursadas_tarde_b.append(row)
+
+    cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Noche' AND comision='A' ALLOW FILTERING;")
+    cursadas_noche_a = []
+    for row in cursadarows:
+        cursadas_noche_a.append(row)
+
+    cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Noche' AND comision='B' ALLOW FILTERING;")
+    cursadas_noche_b = []
+    for row in cursadarows:
+        cursadas_noche_b.append(row)
+
+    cluster.shutdown()
+
+    aulas_ordenadas=sorted(allaulas,key=lambda aulas:aulas.capacidad)
+    manana_ordenadas_a=sorted(cursadas_manana_a,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
+    tarde_ordenadas_a=sorted(cursadas_tarde_a,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
+    noche_ordenadas_a=sorted(cursadas_noche_a,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
+    manana_ordenadas_b=sorted(cursadas_manana_b,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
+    tarde_ordenadas_b=sorted(cursadas_tarde_b,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
+    noche_ordenadas_b=sorted(cursadas_noche_b,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
+    
+    
+    ordenar(aulas_ordenadas,manana_ordenadas_a,manana_ordenadas_b,'Manana')
+    ordenar(aulas_ordenadas,tarde_ordenadas_a,tarde_ordenadas_b,'Tarde')
+    ordenar(aulas_ordenadas,noche_ordenadas_a,noche_ordenadas_b,'Noche')
+    
+    # return HttpResponse('OK')
+    return HttpResponseRedirect("http://127.0.0.1:8000/reportes/planificador")
+
+
+
+
+def ordenar(lista_aulas,lista_cursadasA,lista_cursadasB,turno): #defino la funcion
+    aulas=lista_aulas #asigno la lista que me pasan como parametro a una variable
+    cursada_a=lista_cursadasA #asigno la lista que me pasan como parametro a una variable
+    cursada_b=lista_cursadasB
+
+    for dia in ['Lunes','Martes','Miercoles','Jueves','Viernes']:
+        a=False
+        b=False
+        if len(cursada_a)>0:
+            a=True
+        if len(cursada_b)>0:
+            b=True
+        for x in range(len(aulas)):
+            aula_usada=False
+            if a==True:
+                for y in range(len(cursada_a)):
+                   if aulas[x].capacidad>=cursada_a[y].cantalumnos: 
+                    #INICIO DE LOGICA DE INSERCION EN DB
+                    cluster = Cluster(['127.0.0.1'])
+                    session = cluster.connect()
+                    session.set_keyspace('dbpwa')
+                    session.execute("INSERT INTO planificacion(planificacion_id, carrera, nombremat, comision, turno, aula, piso, dia) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(uuid.uuid1(), cursada_a[y].carrera, cursada_a[y].nombremat, cursada_a[y].comision, cursada_a[y].turno, aulas[x].nombre, aulas[x].piso,dia))
+                    cluster.shutdown()
+                    #FIN DE LOGICA DE INSERCION EN DB
+                    cursada_a.pop(y)
+                    a=False
+                    aula_usada=True
+                    break
+            if b==True:
+                for y in range(len(cursada_b)):
+                   if aulas[x].capacidad>=cursada_b[y].cantalumnos: 
+                    #INICIO DE LOGICA DE INSERCION EN DB
+                    cluster = Cluster(['127.0.0.1'])
+                    session = cluster.connect()
+                    session.set_keyspace('dbpwa')
+                    session.execute("INSERT INTO planificacion(planificacion_id, carrera, nombremat, comision, turno, aula, piso, dia) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(uuid.uuid1(), cursada_b[y].carrera, cursada_b[y].nombremat, cursada_b[y].comision, cursada_b[y].turno, aulas[x].nombre, aulas[x].piso,dia))
+                    cluster.shutdown()
+                    #FIN DE LOGICA DE INSERCION EN DB
+                    cursada_b.pop(y)
+                    b=False
+                    aula_usada=True
+                    break
+            if aula_usada==False:
+                print('AULA SIN USAR:',aulas[x].nombre)
+                #INICIO DE LOGICA DE INSERCION EN DB
+                cluster = Cluster(['127.0.0.1'])
+                session = cluster.connect()
+                session.set_keyspace('dbpwa')
+                session.execute("INSERT INTO aulasinuso(aulasinuso_id, nombre, capacidad, piso, turno, dia) VALUES (%s,%s,%s,%s,%s,%s)",(uuid.uuid1(), aulas[x].nombre, aulas[x].capacidad, aulas[x].piso, turno, dia))
+                cluster.shutdown()
+                #FIN DE LOGICA DE INSERCION EN DB    
+    if len(cursada_a)>0:
+        for z in range(len(cursada_a)):
             cluster = Cluster(['127.0.0.1'])
             session = cluster.connect()
             session.set_keyspace('dbpwa')
-            session.execute("truncate dbpwa.planificacion")
-            session.execute("truncate dbpwa.aulasinuso")
-            session.execute("truncate dbpwa.cursadasinaula")
-            #cluster.shutdown()
-                         
-            aularows = aulas.objects.all()
-            allaulas = []
-            for row in aularows:
-               allaulas.append(row)
-
-            cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Manana' ALLOW FILTERING;")
-            cursadas_manana = []
-            for row in cursadarows:
-                cursadas_manana.append(row)
-            
-            cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Tarde' ALLOW FILTERING;")
-            cursadas_tarde = []
-            for row in cursadarows:
-               cursadas_tarde.append(row)
-     
-            cursadarows = session.execute("SELECT * FROM cursadas WHERE turno='Noche' ALLOW FILTERING;")
-            cursadas_noche = []
-            for row in cursadarows:
-               cursadas_noche.append(row)
-
-            cluster.shutdown()
-
-            aulas_ordenadas=sorted(allaulas,key=lambda aulas:aulas.capacidad)
-            manana_ordenadas=sorted(cursadas_manana,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
-            tarde_ordenadas=sorted(cursadas_tarde,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
-            noche_ordenadas=sorted(cursadas_noche,key=lambda cursadas:cursadas.cantalumnos,reverse=True)
-            
-            
-            ordenar(aulas_ordenadas,manana_ordenadas, 'Manana')
-            
-            ordenar(aulas_ordenadas,tarde_ordenadas,'Tarde')
-            
-            ordenar(aulas_ordenadas,noche_ordenadas,'Noche')
-            
-            return HttpResponse('OK')
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-
-        form = cursadasForm()
+            session.execute("INSERT INTO cursadasinaula(cursadasinaula_id, carrera, nombremat, cantalumnos, comision, turno) VALUES (%s,%s,%s,%s,%s,%s)",(uuid.uuid1(), cursada_a[z].carrera, cursada_a[z].nombremat,cursada_a[z].cantalumnos, cursada_a[z].comision, cursada_a[z].turno))
+            cluster.shutdown() 
+    if len(cursada_b)>0:
+        for z in range(len(cursada_b)):
+            cluster = Cluster(['127.0.0.1'])
+            session = cluster.connect()
+            session.set_keyspace('dbpwa')
+            session.execute("INSERT INTO cursadasinaula(cursadasinaula_id, carrera, nombremat, cantalumnos, comision, turno) VALUES (%s,%s,%s,%s,%s,%s)",(uuid.uuid1(), cursada_b[z].carrera, cursada_b[z].nombremat,cursada_b[z].cantalumnos, cursada_b[z].comision, cursada_b[z].turno))
+            cluster.shutdown() 
 
 
-    return render(request, 'asignador.html', {'form': form})
 
 
-def ordenar(lista_aulas,lista_cursadas,turno): #defino la funcion
-    aulas_ordenadas=lista_aulas #asigno la lista que me pasan como parametro a una variable
-    cursadas_ordenadas=lista_cursadas #asigno la lista que me pasan como parametro a una variable
-
-    for x in range(len(aulas_ordenadas)):        
+"""     for x in range(len(aulas_ordenadas)):        
         if len(cursadas_ordenadas)>0:
             aula_usada=False
             for y in range(len(cursadas_ordenadas)):
@@ -124,7 +196,7 @@ def ordenar(lista_aulas,lista_cursadas,turno): #defino la funcion
             session = cluster.connect()
             session.set_keyspace('dbpwa')
             session.execute("INSERT INTO cursadasinaula(cursadasinaula_id, carrera, nombremat, cantalumnos, comision, turno) VALUES (%s,%s,%s,%s,%s,%s)",(uuid.uuid1(), cursadas_ordenadas[z].carrera, cursadas_ordenadas[z].nombremat,cursadas_ordenadas[z].cantalumnos, cursadas_ordenadas[z].comision, cursadas_ordenadas[z].turno))
-            cluster.shutdown() 
+            cluster.shutdown()  """
 
 
 

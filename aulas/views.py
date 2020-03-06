@@ -20,17 +20,15 @@ from aulas.models import aulas
 from django.db import connection
 from django.http import HttpResponse 
 
-def crearaulas(nombre,capacidad,piso,dia):
-        #agregar un dia y crear las aulas x 5
-    aulita = aulas() # Instancio un objeto aula
-    aulita.aula_id = uuid.uuid1()
-    aulita.nombre = nombre # asigno los valores del form en la prop del objeto instanciado en el paso anterior
-    aulita.capacidad= capacidad # asigno los valores del form en la prop del objeto instanciado en el paso anterior
-    aulita.piso= piso
-    aulita.dia= dia
-    aulita.enuso = False
-    aulita.save() # salvo el objeto en la DB
-    #return HttpResponse("CREASTE UN AULA")
+def crearaulas(nombre,capacidad,piso):
+    #for dia in ['Lunes','Martes','Miercoles','Jueves','Viernes']:
+        aulita = aulas() # Instancio un objeto aula
+        aulita.aula_id = uuid.uuid1()
+        aulita.nombre = nombre # asigno los valores del form en la prop del objeto instanciado en el paso anterior
+        aulita.capacidad= capacidad # asigno los valores del form en la prop del objeto instanciado en el paso anterior
+        aulita.piso=piso
+        #aulita.dia= dia
+        aulita.save() # salvo el objeto en la DB
 
 
 def get_aula(request):
@@ -40,43 +38,30 @@ def get_aula(request):
         form = AulasForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            #
-            # cursor = connection.cursor()
-            # result = cursor.execute("select count (*) FROM aulas WHERE enuso= false ALLOW FILTERING")
-            # resultint = int(result[0])
-            # todasaulas = aulas.objects.all().filter(capacidad=10)
-            #todasaulas = todasaulas.filter(capacidad=10)
-            # cuenta = todasaulas.count()
-            # redirect to a new URL:
-            # if cuenta == 12:
-                data = request.POST.copy() # Copia la data del post a la variable data, luego voy a extaer los campos del form con esta variable
-                aulanombre = data.get('aula') #aca extraigo los campos del form delñ data que definimos en la linea anterior, el parentisis refiere al nombre que definimos el campo en el form.py
-                aulacapa = data.get('capacidad') #esto refiere al nombre que dEfinimos en el form.py
-                aulapiso = data.get('piso')
-                cluster = Cluster(['127.0.0.1'])
-                session = cluster.connect()
-                session.set_keyspace('dbpwa')
-                query = session.prepare('SELECT * FROM aulas WHERE nombre=? ALLOW FILTERING;')#PREARMO LA QUERY EL ? SE REEMPLAZARA POR LAS VARIABLES
-                rows = session.execute(query, [aulanombre]) #EJECUTO LA QUERY Y LE PASO LAS VARIABLES PARA FILTRAR IMPORTANTE QUE ESTEN ENTRE CORCHETES
-                existen = [] #CREO UN ARRAY
-                for row in rows:
-                    existen.append(row) #LLENO EL ARRAY CON LAS FILAS
+            
+            data = request.POST.copy() # Copia la data del post a la variable data, luego voy a extaer los campos del form con esta variable
+            aulanombre = data.get('aula') #aca extraigo los campos del form delñ data que definimos en la linea anterior, el parentisis refiere al nombre que definimos el campo en el form.py
+            aulacapa = data.get('capacidad') #esto refiere al nombre que dEfinimos en el form.py
+            aulapiso = data.get('piso')
+            cluster = Cluster(['127.0.0.1'])
+            session = cluster.connect()
+            session.set_keyspace('dbpwa')
+            query = session.prepare('SELECT * FROM aulas WHERE nombre=? ALLOW FILTERING;')#PREARMO LA QUERY EL ? SE REEMPLAZARA POR LAS VARIABLES
+            rows = session.execute(query, [aulanombre]) #EJECUTO LA QUERY Y LE PASO LAS VARIABLES PARA FILTRAR IMPORTANTE QUE ESTEN ENTRE CORCHETES
+            existen = [] #CREO UN ARRAY
+            for row in rows:
+                existen.append(row) #LLENO EL ARRAY CON LAS FILAS
+            cluster.shutdown() # Cierro La conexion
+            if len(existen) > 0: 
+                return HttpResponse("El aula {} ya existe".format(aulanombre))
+
+            else:
+                #agregar un dia y crear las aulas x 5
+
+                crearaulas(aulanombre,aulacapa,aulapiso)
                 cluster.shutdown() # Cierro La conexion
-                if len(existen) > 0: #VERIFICO SI ESE TURNO PARA ESA COMISION YA ESTA USADO
-                    return HttpResponse("El aula {} ya existe".format(aulanombre))
-
-                else:
-                    #agregar un dia y crear las aulas x 5
-
-                    crearaulas(aulanombre,aulacapa,aulapiso,'Lunes')
-                    crearaulas(aulanombre,aulacapa,aulapiso,'Martes')
-                    crearaulas(aulanombre,aulacapa,aulapiso,'Miercoles')
-                    crearaulas(aulanombre,aulacapa,aulapiso,'Jueves')
-                    crearaulas(aulanombre,aulacapa,aulapiso,'Viernes')
-                    cluster.shutdown() # Cierro La conexion
-
-                    return HttpResponse("CREASTE UN AULA")
+                
+                return HttpResponse("CREASTE UN AULA")
 
         # if a GET (or any other method) we'll create a blank form
     else:
@@ -85,3 +70,4 @@ def get_aula(request):
 
 
     return render(request, 'aula.html', {'form': form})
+
