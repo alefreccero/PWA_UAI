@@ -41,15 +41,31 @@
         <a class="nav-link" href="http://127.0.0.1:8000/cursadas">Cursadas</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="http://127.0.0.1:8000/listadecursadas">Listado de Cursadas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://127.0.0.1:8000/listadeaulas">Listado de Aulas </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="http://127.0.0.1:8000/planificador">Planificador</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="http://127.0.0.1:8000/reporte1">Lista de aulas</a>
+        <a class="nav-link" href="http://127.0.0.1:8000/reportecomision">Consulta por Comision</a>
       </li>  
+      <li class="nav-item">
+        <a class="nav-link" href="http://127.0.0.1:8000/reporteaula">Consulta por Aula</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" href="http://127.0.0.1:8000/reporteaula_libre">Aulas libres</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://127.0.0.1:8000/reportecursada_libre">Materias sin Aula</a>
+      </li>     
     </ul>
   </div>  
 </nav>
 
+{% block content %}
 <div class="container" style="margin-top:30px">
   <div class="row">
     <div class="col-sm-4">
@@ -76,7 +92,7 @@
     </div>
   </div>
 </div>
-
+{% endblock %}
 <div class="jumbotron text-center" style="margin-bottom:0">
   <p>Página web creada con Bootstrap 4</p>
 </div>

@@ -8,7 +8,7 @@ COMISIONES= [
 
 
 class reporteForm(forms.Form):
-    # carrera = forms.CharField(label='Nombre de Carrera', max_length=100)
+    carrera = forms.CharField(label='Nombre de Carrera', max_length=100)
     # nombremat = forms.CharField(label='Nombre de Materia', max_length=100)
     # turno = forms.CharField(label='Turno', max_length=100, widget=forms.Select(choices=TURNOS))
     # dia = forms.CharField(label='Dia', max_length=100, widget=forms.Select(choices=DIAS))

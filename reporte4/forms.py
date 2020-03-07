@@ -1,10 +1,8 @@
 from django import forms
+from aulas.models import aulas
 
-TURNOS= [
-    ('Manana', 'Manana'),
-    ('Tarde', 'Tarde'),
-    ('Noche', 'Noche'),
-    ]
+allaulas = aulas.objects.all()
+
 
 COMISIONES= [
     ('A', 'A'),

@@ -1,5 +1,16 @@
-<form action="/reporte4/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+{% extends 'home.html' %}
+{% block content %}
+    <br><br>
+    <form method='post'>
+        {% csrf_token %}
+        <h1>Seleccione el aula que desea consultar</h1>
+        <select class="form-control" name='aula'>
+            {% for aulas in allaulas %}
+                <option value='{{aulas.nombre}}'>{{ aulas.nombre }}</option><br>
+            {% endfor %}
+            <input type="submit" value="Consultar">
+        </select>
+    </form>
+    <br><br>
+{% endblock %}
+

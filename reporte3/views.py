@@ -3,15 +3,16 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
-from aulas.models import aulas
+from reporte3.models import aulasinuso
 from django import template
 # Create your views here.
 
-def reporte_filtrado(request):
-	if request.method == 'POST':
-		if form.is_valid():
-			return render(request, 'reporte3.html', contexto)
-	else:
-		allaulas = aulas.objects.all()
-		contexto = {'allaulas': allaulas}
-		return render(request,'reporte3.html', contexto)
+def showreport1(request):
+    
+	allaulasinuso = aulasinuso.objects.all()
+		    
+	contexto = {'allaulasinuso': allaulasinuso}
+	#contexto = template.Context('allaulas': 'allaulas')
+		    #return a response to your template and add query_results to the context
+	return render(request, 'reporte3.html', contexto)
+
