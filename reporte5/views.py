@@ -23,11 +23,12 @@ def reporte5(request):
 			# redirect to a new URL:
 			data = request.POST.copy() # Copia la data del post a la variable data, luego voy a extaer los campos del form con esta variable
 			comision = data.get('comision')
+			carrera=data.get('carrera')
 			cluster = Cluster(['127.0.0.1'])
 			session = cluster.connect()
 			session.set_keyspace('dbpwa')
-			query = session.prepare('SELECT * FROM planificacion WHERE comision=? ALLOW FILTERING;') #PREARMO LA QUERY EL ? SE REEMPLAZARA POR LAS VARIABLES
-			cronograma = session.execute(query, [comision])
+			query = session.prepare('SELECT * FROM planificacion WHERE carrera=? AND comision=? ALLOW FILTERING;') #PREARMO LA QUERY EL ? SE REEMPLAZARA POR LAS VARIABLES
+			cronograma = session.execute(query, [carrera,comision])
 
 
 			session.shutdown()

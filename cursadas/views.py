@@ -59,7 +59,7 @@ def get_name(request):
                 cursadita.cantalumnos= cantalumnos
                 cursadita.save() # salvo el objeto en la DB
                 
-            return HttpResponse("CREASTE UNA CURSADA!!")    
+            #return HttpResponse("CREASTE UNA CURSADA!!")    
 
     # if a GET (or any other method) we'll create a blank form
     else:

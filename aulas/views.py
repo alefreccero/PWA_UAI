@@ -27,7 +27,6 @@ def crearaulas(nombre,capacidad,piso):
         aulita.nombre = nombre # asigno los valores del form en la prop del objeto instanciado en el paso anterior
         aulita.capacidad= capacidad # asigno los valores del form en la prop del objeto instanciado en el paso anterior
         aulita.piso=piso
-        #aulita.dia= dia
         aulita.save() # salvo el objeto en la DB
 
 
@@ -61,7 +60,7 @@ def get_aula(request):
                 crearaulas(aulanombre,aulacapa,aulapiso)
                 cluster.shutdown() # Cierro La conexion
                 
-                return HttpResponse("CREASTE UN AULA")
+                #return HttpResponse("CREASTE UN AULA")
 
         # if a GET (or any other method) we'll create a blank form
     else:

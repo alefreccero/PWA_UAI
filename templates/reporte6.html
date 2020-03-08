@@ -1,0 +1,25 @@
+{% extends 'home.html' %}
+{% block content %}
+    <br><br>
+    <h1>Aulas</h1>
+    <table border="1" width="600">
+    <tr>
+    <td><b>Aula</b></td>
+    <td><b>Piso</b></td>
+    <td><b>Capacidad</b></td>
+
+    </tr>
+
+    {% for aulas in allaulas %}
+    <tr>
+    <td>{{ aulas.nombre }}</td>
+    <td>{{ aulas.piso }}</td>
+    <td>{{ aulas.capacidad }}</td>
+
+    </tr>
+    {% endfor %}
+    </table>
+    <br><br>
+{% endblock %}
+
+

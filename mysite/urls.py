@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^aulas/', include('aulas.urls')),
@@ -31,6 +32,11 @@ urlpatterns = [
     url(r'^reporteaula_libre/', include('reporte3.urls')),
     url(r'^ReporteComision/', include('reporte5.urls')),
     url(r'^reportecomision/', include('reporte5.urls')),
+    url(r'^listadeaulas/', include('reporte6.urls')),
+    url(r'^ListadeAulas/', include('reporte6.urls')),
+    url(r'^ListadeCursadas/', include('reporte7.urls')),
+    url(r'^listadecursadas/', include('reporte7.urls')),
+    url(r'^home', TemplateView.as_view(template_name='home.html')),
     url(r'^admin/', admin.site.urls)
 
 ]

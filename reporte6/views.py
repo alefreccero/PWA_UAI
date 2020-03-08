@@ -3,15 +3,15 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
-from reporte6.models import aulasinuso
+from aulas.models import aulas
 from django import template
 # Create your views here.
 
 def showreport1(request):
     
-	allaulasinuso = aulasinuso.objects.all()
+	allaulas = aulas.objects.all()
 		    
-	contexto = {'allaulasinuso': allaulasinuso}
+	contexto = {'allaulas': allaulas}
 	#contexto = template.Context('allaulas': 'allaulas')
 		    #return a response to your template and add query_results to the context
 	return render(request, 'reporte6.html', contexto)

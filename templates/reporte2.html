@@ -1,0 +1,34 @@
+{% extends 'home.html' %}
+{% block content %}
+    <br><br>
+    <h1>Planificacion</h1>
+    <table border="1" width="600">
+    <tr>
+    <td><b>Carrera</b></td>
+    <td><b>Turno</b></td>
+    <td><b>Comision</b></td>
+    <td><b>Materia</b></td>
+    <td><b>Dia</b></td>
+    <td><b>Aula</b></td>
+    <td><b>Piso</b></td>
+
+
+    </tr>
+
+    {% for planificacion in cronograma %}
+    <tr>
+    <td>{{ planificacion.carrera }}</td>
+    <td>{{ planificacion.turno }}</td>
+    <td>{{ planificacion.comision }}</td>
+    <td>{{ planificacion.nombremat }}</td>
+    <td>{{ planificacion.dia }}</td>
+    <td>{{ planificacion.aula }}</td>
+    <td>{{ planificacion.piso }}</td>
+    </td>
+    </tr>
+    {% endfor %}
+    </table>
+    <br><br>
+{% endblock %}
+
+

@@ -1,35 +1,28 @@
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Cursadas sin aula</title>
-</head>
-<body>
+{% extends 'home.html' %}
+{% block content %}
+    <br><br>
+    <h1>Materias sin aula</h1>
+    <table border="1" width="600">
+    <tr>
+    <td><b>Materia</b></td>
+    <td><b>Carrera</b></td>
+    <td><b>Turno</b></td>
+    <td><b>Comision</b></td>
+    <td><b>Inscriptos</b></td>
+
+    </tr>
+
+    {% for cursadasinaula in allcursadassinaula %}
+    <tr>
+    <td>{{ cursadasinaula.nombremat }}</td>
+    <td>{{ cursadasinaula.carrera }}</td>
+    <td>{{ cursadasinaula.turno }}</td>
+    <td>{{ cursadasinaula.comision }}</td>
+    <td>{{ cursadasinaula.cantalumnos }}</td>
 
 
-
-<h1>Cursadas sin aula</h1>
-<table border="1" width="600">
-<tr>
-<td><b>Materia</b></td>
-<td><b>Carrera</b></td>
-<td><b>Turno</b></td>
-<td><b>Comision</b></td>
-<td><b>Inscriptos</b></td>
-
-</tr>
-
-{% for cursadasinaula in allcursadassinaula %}
-<tr>
-<td>{{ cursadasinaula.nombremat }}</td>
-<td>{{ cursadasinaula.carrera }}</td>
-<td>{{ cursadasinaula.turno }}</td>
-<td>{{ cursadasinaula.comision }}</td>
-<td>{{ cursadasinaula.cantalumnos }}</td>
-
-
-</tr>
-{% endfor %}
-</table>
-
-
-</body>
+    </tr>
+    {% endfor %}
+    </table>
+    <br><br>
+{% endblock %}

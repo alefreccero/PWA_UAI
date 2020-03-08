@@ -1,5 +1,10 @@
-<form action="/reportecomision/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+{% extends 'home.html' %}
+{% block content %}
+    <br><br>   
+    <form action="/reportecomision/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Consultar">
+    </form>
+    <br><br>
+{% endblock %}

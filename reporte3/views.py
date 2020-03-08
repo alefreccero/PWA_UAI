@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
-from reporte6.models import aulasinuso
+from reporte3.models import aulasinuso
 from django import template
 # Create your views here.
 
