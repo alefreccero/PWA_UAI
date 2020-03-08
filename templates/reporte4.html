@@ -1,0 +1,19 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Reporte por aulas</title>
+</head>
+<body>
+    <form method='post'>
+        {% csrf_token %}
+        <p><h1>Seleccione el aula que desea consultar</h1></p>
+        <select class="form-control" name='aula'>
+            {% for aulas in allaulas %}
+                <option value='{{aulas.nombre}}'>{{ aulas.nombre }}</option>
+            {% endfor %}
+            <input type="submit" value="Consultar">
+        </select>
+    </form>
+
+</body>
