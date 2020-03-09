@@ -1,10 +1,23 @@
 {% extends 'home.html' %}
 {% block content %}
     <br><br>
+    
     <form action="/cursadas/" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Crear Cursada" onclick="alert('Creaste una Cursada')">
+        
+        <input type="submit" value="Crear Cursada">
     </form>
+    <br>
+
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message | safe }}
+    </div>
+    {% endfor %}
+
     <br><br>
 {% endblock %}

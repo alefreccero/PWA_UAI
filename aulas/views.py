@@ -6,7 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.http import HttpResponseRedirect
-
+from django.contrib import messages
 from .forms import AulasForm
 import uuid
 #IMPORTS PARA QUE FUNCIONE EL DRIVER CON CASSANDRA
@@ -51,15 +51,16 @@ def get_aula(request):
             for row in rows:
                 existen.append(row) #LLENO EL ARRAY CON LAS FILAS
             cluster.shutdown() # Cierro La conexion
-            if len(existen) > 0: 
-                return HttpResponse("El aula {} ya existe".format(aulanombre))
+            if len(existen) > 0:
+                messages.error(request, "El aula {} ya existe".format(aulanombre))
+                
 
             else:
                 #agregar un dia y crear las aulas x 5
 
                 crearaulas(aulanombre,aulacapa,aulapiso)
                 cluster.shutdown() # Cierro La conexion
-                
+                messages.success(request, "Se ha creado exitosamente el aula {} en el piso {} con una capacidad para {} alumnos".format(aulanombre, aulapiso, aulacapa))  
                 #return HttpResponse("CREASTE UN AULA")
 
         # if a GET (or any other method) we'll create a blank form

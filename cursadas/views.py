@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from .forms import cursadasForm
 import uuid
 #IMPORTS PARA QUE FUNCIONE EL DRIVER CON CASSANDRA
-
+from django.contrib import messages
 from cassandra.cqlengine import connection
 from cassandra.cqlengine.management import sync_table
 from cassandra.cluster import Cluster
@@ -47,7 +47,8 @@ def get_name(request):
                 existen.append(row) #LLENO EL ARRAY CON LAS FILAS
             cluster.shutdown() # Cierro La conexion
             if len(existen) > 0: #VERIFICO SI ESE TURNO PARA ESA COMISION YA ESTA USADO
-                return HttpResponse("La carrera {} comision {} ya tiene una materia {} asignada en el turno {}".format(carrera, comision, nombremat, turno))
+                messages.error(request, "La carrera {} comision {} ya tiene una materia {} asignada en el turno {}".format(carrera, comision, nombremat, turno)) 
+                
                 
             else:
                 cursadita = cursadas() # Instancio un objeto aula
@@ -58,8 +59,9 @@ def get_name(request):
                 cursadita.comision= comision
                 cursadita.cantalumnos= cantalumnos
                 cursadita.save() # salvo el objeto en la DB
+                messages.success(request, "Se ha creado exitosamente la cursada {} de la carrera {} en el turno {} para la comisión {} con {} inscriptos".format(nombremat, carrera, turno,  comision, cantalumnos))  
                 
-            #return HttpResponse("CREASTE UNA CURSADA!!")    
+            
 
     # if a GET (or any other method) we'll create a blank form
     else:
